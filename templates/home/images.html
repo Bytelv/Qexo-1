@@ -302,7 +302,7 @@
                     if (res.status) {
                         notyf.success('上传成功！');
                         for(let i=0;i<posts.length;i++){
-                            if(posts[i]["time"]===del_file){
+                            if(posts[i]["time"]===file){
                                 posts.splice(i,1);
                                 $("#post-number").html(posts.length);
                                 break;
