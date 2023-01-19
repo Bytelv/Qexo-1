@@ -18,7 +18,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="javascript:Uploadimg()" class="btn btn-sm btn-neutral">上传图片</a>
+                        <a href="javascript:isAssetTypeAnImage(ext)" class="btn btn-sm btn-neutral">上传图片</a>
                     </div>      
                 </div>
             </div>
@@ -320,6 +320,85 @@
                 }
             })
         }
+        // 图片格式
+ // 图片格式
+        function isAssetTypeAnImage(ext) {
+            return (
+                [
+                    'png',
+                    'jpg',
+                    'jpeg',
+                    'bmp',
+                    'gif',
+                    'webp',
+                    'psd',
+                    'svg',
+                    'tiff',
+                ].indexOf(ext.toLowerCase()) !== -1
+            )
+        }
+
+
+
+          created() {
+         // 只有添加的时候才不可以调详情接口
+                 if (flag == 0 || flag == 1) {
+                     this.getBannerDetails()
+                 }
+                 if (flag == 0) {
+                     //查看页面的时候 设置按钮不可用，背景为灰色
+                     $('.isShow').css('background', '#cccccc !important').prop("disabled", true);
+                 }
+             },
+
+            //上传图片
+            uploadPhoto(e) {
+                var that = this
+                var photoFile = e.target.value
+                //获取最后一个.的位置
+                var index = photoFile.lastIndexOf(".");
+                //获取后缀
+                var ext = photoFile.substr(index + 1);
+                if (isAssetTypeAnImage(ext) != true) {
+                    alert("图片格式不正确");
+                    return;
+                }
+
+                var files = new FormData()
+                files.append('file', e.currentTarget.files[0])
+
+                axios({
+                    method: "POST",
+                    url: 'https://qexo.lvbyte.tk/api/upload/',
+                    data: files,
+                    headers: {
+                        // 'Content-Type': 'application/json'
+                    }
+                }).then(function (res) {
+                    if (res.status === 200) {
+                        var ret = res.data;
+                        switch (ret.code) {
+                            case 200:
+                                that.detailForm.img = ret.data
+                                break;
+                            case 500:
+                                if (typeof err === 'function') {
+                                    alert(ret)
+                                } else {
+                                    alert(ret.msg)
+                                }
+                                break;
+                            case 401:
+                                break;
+                        }
+                    } else {
+                        console.error('network error', res);
+                    }
+                })
+
+            },
+        }
+
 
     </script>
 {% endblock javascripts %}
