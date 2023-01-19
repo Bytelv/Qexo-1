@@ -293,7 +293,6 @@
             let loading = new KZ_Loading('正在上传中...');
             loading.show();
             $.ajax({
-                var file = document.getElementById("file_image");
                 url: '/api/upload/',
                 method: 'post',
                 data: {"image": file},
