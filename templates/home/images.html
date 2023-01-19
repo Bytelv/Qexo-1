@@ -320,9 +320,8 @@
                 }
             })
         }
-        // 图片格式
- // 图片格式
-        function isAssetTypeAnImage(ext) {
+
+        function isAssetTypeAnImage() {
             return (
                 [
                     'png',
@@ -359,7 +358,7 @@
                 var index = photoFile.lastIndexOf(".");
                 //获取后缀
                 var ext = photoFile.substr(index + 1);
-                if (isAssetTypeAnImage(ext) != true) {
+                if (isAssetTypeAnImage() != true) {
                     alert("图片格式不正确");
                     return;
                 }
