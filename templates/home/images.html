@@ -296,6 +296,13 @@
                 method: 'post',
                 data: {"image": del_file},
                 dataType: 'JSON',
+                accept: "image/*",
+                filename(name) {
+                        return name
+                            .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, "")
+                            .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, "")
+                            .replace("/\\s/g", "");
+                },
                 success: function (res) {
                     loading.destroy();
                     if (res.status) {
