@@ -18,7 +18,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/" class="btn btn-sm btn-neutral">上传图片</a>
+                        <a href="javascript:Uploadimg()" class="btn btn-sm btn-neutral">上传图片</a>
                     </div>      
                 </div>
             </div>
@@ -289,40 +289,35 @@
             })
         }
         function Uploadimg() {
-            accept: "image/*",
-                url: "/api/upload/",
-                max: 5 * 1024 * 1024,
-                filename(name) {
-                    return name
-                        .replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, "")
-                        .replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, "")
-                        .replace("/\\s/g", "");
-                },
-                success(editor, msg) {
-                    let responseData = JSON.parse(msg)
-                    if (responseData.status) {
-                        let imageUrl = responseData.url;
-                        let succFileText = "";
-                        if (vditor && vditor.vditor.currentMode === "wysiwyg") {
-                            succFileText += `\n <img alt=${imageUrl} src="${imageUrl}">`;
-                        } else {
-                            succFileText += `\n![${imageUrl}](${imageUrl})`;
+            let loading = new KZ_Loading('正在上传中...');
+            loading.show();
+            $.ajax({
+                url: '/api/upload/',
+                method: 'post',
+                data: {"image": del_file},
+                dataType: 'JSON',
+                success: function (res) {
+                    loading.destroy();
+                    if (res.status) {
+                        notyf.success('上传成功！');
+                        for(let i=0;i<posts.length;i++){
+                            if(posts[i]["time"]===del_file){
+                                posts.splice(i,1);
+                                $("#post-number").html(posts.length);
+                                break;
+                            }
                         }
-                            //将图片路径写入文本
-                        document.execCommand("insertHTML", false, succFileText);
-                        notyf.success(responseData.msg);
+                        change_page(_page);
                     } else {
-                        notyf.error(responseData.msg);
+                        notyf.error(res.msg);
                     }
-
                 },
-                error() {
-                    notyf.error("上传失败！");
+                error: function (res) {
+                    loading.destroy();
+                    notyf.error("网络错误！");
                 }
-               
-                
-            }
-
+            })
+        }
 
     </script>
 {% endblock javascripts %}
