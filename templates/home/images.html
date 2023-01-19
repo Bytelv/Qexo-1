@@ -17,6 +17,9 @@
                             </ol>
                         </nav>
                     </div>
+                    <div class="col-lg-6 col-5 text-right">
+                        <a href="javascript:Upload()" class="btn btn-sm btn-neutral">上传图片</a>
+                    </div>      
                 </div>
             </div>
         </div>
@@ -285,6 +288,44 @@
                 }
             })
         }
+        function Upload() {
+            if (!_status) {
+                return false;
+            }
+            let loading = new KZ_Loading('正在上传中...');
+            _status = false;
+            loading.show();
+            save_bottom();
+            $.ajax({
+                url: '/api/upload/',
+                method: 'post',
+                data: {
+                    "content": editor.getHtml(), "tags": JSON.stringify(tags), "id": id, "time":
+                        (Number(new Date($("#time").val())) / 1000).toString(),
+                    "values": JSON.stringify(values)
+                },
+                dataType: 'JSON',
+                success: function (res) {
+                    loading.destroy();
+                    if (res.status) {
+                        notyf.success(res.msg);
+                        if (res.id) {
+                            id = res.id;
+                            $("#delete-button").removeAttr("hidden");
+                        }
+                        file_content = editor.getHtml();
+                        _status = true;
+                    } else {
+                        notyf.error(res.msg);
+                        _status = true;
+                    }
+                },
+                error: function (res) {
+                    loading.destroy();
+                    notyf.error("网络错误！");
+                    _status = true;
+                }
+            })
 
 
     </script>
