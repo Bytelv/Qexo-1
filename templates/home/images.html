@@ -289,7 +289,28 @@
             })
         }
         function Uploadimg() {
-            var file = document.getElementById("file_image");
+            var that = this
+                var photoFile = e.target.value
+                //获取最后一个.的位置
+                var index = photoFile.lastIndexOf(".");
+                //获取后缀
+                var ext = photoFile.substr(index + 1);
+                if (isAssetTypeAnImage() != true) {
+                    alert("图片格式不正确");
+                    return;
+                }
+
+                var files = new FormData()
+                files.append('file', e.currentTarget.files[0])
+
+                axios({
+                    method: "POST",
+                    url: 'https://qexo.lvbyte.tk/api/upload/',
+                    data: files,
+                    headers: {
+                        // 'Content-Type': 'application/json'
+                    }
+                }
             let loading = new KZ_Loading('正在上传中...');
             loading.show();
             $.ajax({
