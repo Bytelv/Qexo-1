@@ -18,7 +18,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="javascript:Upload()" class="btn btn-sm btn-neutral">上传图片</a>
+                        <a href="javascript:Uploadimg()" class="btn btn-sm btn-neutral">上传图片</a>
                     </div>      
                 </div>
             </div>
@@ -288,7 +288,7 @@
                 }
             })
         }
-        function Upload() {
+        function Uploadimg() {
             accept: "image/*",
                 url: "/api/upload/",
                 max: 5 * 1024 * 1024,
