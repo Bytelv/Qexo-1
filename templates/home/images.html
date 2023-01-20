@@ -18,7 +18,7 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="javascript:Uploadimg()" class="btn btn-sm btn-neutral">上传图片</a>
+                        <a href="javascript:Upload_file()" class="btn btn-sm btn-neutral">上传图片</a>
                     </div>      
                 </div>
             </div>
@@ -110,7 +110,8 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 
-
+    <script type="text/javascript" src="https://cdn.staticaly.com/gh/Bytelv/web-uploader@master/js/Q.js"></script>
+    <script type="text/javascript" src="https://cdn.staticaly.com/gh/Bytelv/web-uploader@master/js/Q.Uploader.js"></script>
     <script>
         var del_file = "";
         var posts = {{ posts|safe }};
@@ -288,43 +289,20 @@
                 }
             })
         }
-        function Uploadimg() {
-            var that = this
-                var photoFile = e.target.value
-                //获取最后一个.的位置
-                var index = photoFile.lastIndexOf(".");
-                //获取后缀
-                var ext = photoFile.substr(index + 1);
-                if (isAssetTypeAnImage() != true) {
-                    alert("图片格式不正确");
-                    return;
-                }
-
-                var files = new FormData()
-                files.append('file', e.currentTarget.files[0])
-
-                axios({
-                    method: "POST",
-                    url: 'https://qexo.lvbyte.tk/api/upload/',
-                    data: files,
-                    headers: {
-                        // 'Content-Type': 'application/json'
-                    }
-                }
-            let loading = new KZ_Loading('正在上传中...');
+        function upload_file() {
+            let loading = new KZ_Loading('正在上传中...')
             loading.show();
             $.ajax({
                 url: '/api/upload/',
                 method: 'post',
                 data: {"image": file},
                 dataType: 'JSON',
-                accept: "image/*",               
                 success: function (res) {
                     loading.destroy();
                     if (res.status) {
-                        notyf.success('上传成功！');
+                        notyf.success('删除成功！');
                         for(let i=0;i<posts.length;i++){
-                            if(posts[i]["time"]===file){
+                            if(posts[i]["time"]===del_file){
                                 posts.splice(i,1);
                                 $("#post-number").html(posts.length);
                                 break;
@@ -341,83 +319,8 @@
                 }
             })
         }
-
-        function isAssetTypeAnImage() {
-            return (
-                [
-                    'png',
-                    'jpg',
-                    'jpeg',
-                    'bmp',
-                    'gif',
-                    'webp',
-                    'psd',
-                    'svg',
-                    'tiff',
-                ].indexOf(ext.toLowerCase()) !== -1
-            )
-        }
-
-
-
-          created() {
-         // 只有添加的时候才不可以调详情接口
-                 if (flag == 0 || flag == 1) {
-                     this.getBannerDetails()
-                 }
-                 if (flag == 0) {
-                     //查看页面的时候 设置按钮不可用，背景为灰色
-                     $('.isShow').css('background', '#cccccc !important').prop("disabled", true);
-                 }
-             },
-
-            //上传图片
-            uploadPhoto(e) {
-                var that = this
-                var photoFile = e.target.value
-                //获取最后一个.的位置
-                var index = photoFile.lastIndexOf(".");
-                //获取后缀
-                var ext = photoFile.substr(index + 1);
-                if (isAssetTypeAnImage() != true) {
-                    alert("图片格式不正确");
-                    return;
-                }
-
-                var files = new FormData()
-                files.append('file', e.currentTarget.files[0])
-
-                axios({
-                    method: "POST",
-                    url: 'https://qexo.lvbyte.tk/api/upload/',
-                    data: files,
-                    headers: {
-                        // 'Content-Type': 'application/json'
-                    }
-                }).then(function (res) {
-                    if (res.status === 200) {
-                        var ret = res.data;
-                        switch (ret.code) {
-                            case 200:
-                                that.detailForm.img = ret.data
-                                break;
-                            case 500:
-                                if (typeof err === 'function') {
-                                    alert(ret)
-                                } else {
-                                    alert(ret.msg)
-                                }
-                                break;
-                            case 401:
-                                break;
-                        }
-                    } else {
-                        console.error('network error', res);
-                    }
-                })
-
-            },
-        }
+       
+        
 
 
     </script>
