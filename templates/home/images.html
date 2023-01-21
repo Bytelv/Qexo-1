@@ -120,6 +120,7 @@
         var posts = {{ posts|safe }};
         var _page = 1;
         
+	@csrf_exempt
 	const saveReport = function(file[]) {
 	/* jQuery.form表单提交数据 */
 	        $('#addImg').ajaxSubmit({
