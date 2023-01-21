@@ -124,6 +124,8 @@
 	@csrf_exempt
 	const saveReport = function(file[]) {
 	/* jQuery.form表单提交数据 */
+		let loading = new KZ_Loading('正在上传中...');
+                loading.show();
 	        $('#addImg').ajaxSubmit({
    		        type: 'post',
 	  	        url: '/api/upload/',
@@ -328,37 +330,7 @@
                 }
             })
         }
-        function () {
-            let loading = new KZ_Loading('正在上传中...')
-            loading.show();
-            $.ajax({
-                url: '/api/upload/',
-                method: 'post',
-                data: {"image": file},
-                dataType: 'JSON',
-                success: function (res) {
-                    loading.destroy();
-                    if (res.status) {
-                        notyf.success('删除成功！');
-                        for(let i=0;i<posts.length;i++){
-                            if(posts[i]["time"]===del_file){
-                                posts.splice(i,1);
-                                $("#post-number").html(posts.length);
-                                break;
-                            }
-                        }
-                        change_page(_page);
-                    } else {
-                        notyf.error(res.msg);
-                    }
-                },
-                error: function (res) {
-                    loading.destroy();
-                    notyf.error("网络错误！");
-                }
-            })
-        }
-       
+        
         
 
 
