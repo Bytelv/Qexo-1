@@ -19,6 +19,7 @@
                     </div>
                     <div class="col-lg-6 col-5 text-right" id="upJPG">                            
 			<form id="addImg" method="POST" enctype="multipart/form-data" onsubmit="return saveReport();">
+				{% csrf_token %}
 				<input type="file" name="imgData" id=="addFile">
 			        <input type="submit" id="imgPost">
 			 </form>
