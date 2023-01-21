@@ -17,14 +17,8 @@
                             </ol>
                         </nav>
                     </div>
-                    <div class="col-lg-6 col-5 text-right">
-                        <div class="addImg" id="upJPG">
-                            
-                        <a class="btn btn-sm btn-neutral">上传图片</a>
-                            <form id="addImg" method="POST" enctype="multipart/form-data" onsubmit="return saveReport();"> 
-                                <input type="file" name="imgData" id="addFile">
-                                <input type="submit" id="imgPost">
-                            </form>    
+                    <div class="col-lg-6 col-5 text-right">                            
+                        <a href="javascript:upload_file" class="btn btn-sm btn-neutral">上传图片</a>			  
                     </div>      
                 </div>
             </div>
@@ -123,36 +117,36 @@
         var posts = {{ posts|safe }};
         var _page = 1;
         
-        const saveReport = function() {
-	            /* jQuery.form表单提交数据 */
-            	$('#addImg').ajaxSubmit({
-                		type: 'post',
-	                	url: '/api/upload/',
-	                	data: {
-                			picType: 'jpg' // 图片格式
-                		},
-	                	dataType: 'json',
-	                	success: function(res) {
-	                		if (res.code == 1) {
-	                			/* 生成的图片ID */
-                				avatars = res.imgGid;
-	                			/* 拼接回显图片 */
-	                			$('#upJPG').prepend('<img src="' + res.imgGid + '" class="imgStyle" />');
-	                			/* 删除图片 */
-	                			$('.close').on('click', function(e) {
-		                			/* 阻止图片跳转 */
-	                				e.stopPropagation();
-			                		/* 对dom的操作 */
-	                			});
-	                		}
-	            	},
-	                	error: function(err) {
-	                		hintCard('网络错误');
-                		}
-                	});
-                	/* 防止表单自己再次提交，并跳转页面 */
-                	return false;
-                }
+	function upload_file(file[]) {
+	/* jQuery.form表单提交数据 */
+	    $('#addImg').ajaxSubmit({
+    		    type: 'post',
+		    url: '上传接口api',
+		    data: {
+		            picType: 'jpg' // 图片格式
+		    },
+		    dataType: 'json',
+		    success: function(res) {
+		            if (res.code == 1) {
+			            /* 生成的图片ID */
+			    	    avatars = res.imgGid;
+				    /* 拼接回显图片 */
+				    $('#upJPG').prepend('<img src="' + res.imgGid + '" class="imgStyle" />');
+					/* 删除图片 */
+				    $('.close').on('click', function(e) {
+						/* 阻止图片跳转 */
+				            e.stopPropagation();
+						/* 对dom的操作 */
+				    });
+		            }
+			},
+			error: function(err) {
+				hintCard('网络错误');
+			}
+		});
+		/* 防止表单自己再次提交，并跳转页面 */
+		return false;
+	}
 
 
         function scrollToTop() {
@@ -327,7 +321,7 @@
                 }
             })
         }
-        function upload_file() {
+        function () {
             let loading = new KZ_Loading('正在上传中...')
             loading.show();
             $.ajax({
