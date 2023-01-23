@@ -232,7 +232,10 @@ def friends_circle(request):
         data = list()
         for i in all_friends:
             if i.status:
-                data.append({i.name,i.url,i.imageUrl})
+                data.append({"name": i.name, "url": i.url, "image": i.imageUrl,
+                             "description": i.description,
+                             "time": i.time})
+        data.sort(key=lambda x: x["time"])
         
         context = {"friends": data, "status": True}
     except Exception as e:
