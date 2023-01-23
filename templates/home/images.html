@@ -17,7 +17,6 @@
                             </ol>
                         </nav>
                     </div>
-                       
                 </div>
             </div>
         </div>
@@ -108,49 +107,11 @@
 <!-- Specific JS goes HERE -->
 {% block javascripts %}
 
-    <script type="text/javascript" src="https://cdn.staticaly.com/gh/Bytelv/web-uploader@master/js/Q.js"></script>
-    <script type="text/javascript" src="https://cdn.staticaly.com/gh/Bytelv/web-uploader@master/js/Q.Uploader.js"></script>
+
     <script>
         var del_file = "";
         var posts = {{ posts|safe }};
         var _page = 1;
-        
-	@csrf_exempt
-	const saveReport = function(file) {
-	/* jQuery.form表单提交数据 */
-		let loading = new KZ_Loading('正在上传中...');
-                loading.show();
-	        $('#addImg').ajaxSubmit({
-   		        type: 'post',
-	  	        url: '/api/upload/',
-		        data: {
-		 	        picType: 'jpg' // 图片格式
-		        },
-		        dataType: 'json',
-		        success: function(res) {
-			        if (res.code == 1) {
-				        /* 生成的图片ID */
-				        avatars = res.imgGid;
-				        /* 拼接回显图片 */
-				        $('#upJPG').prepend('<img src="' + res.imgGid + '" class="imgStyle" />');
-				        /* 删除图片 */
-				        $('.close').on('click', function(e) {
-				  	        /* 阻止图片跳转 */
-					        e.stopPropagation();
-					        /* 对dom的操作 */
-				        });
-			        }
-		        },
-		        error: function(err) {
-			        loading.destroy();
-				notyf.error('网络错误');
-		        }
-	        });
-	        /* 防止表单自己再次提交，并跳转页面 */
-	        return false;
-        }
-
-
 
         function scrollToTop() {
             let timer = null;
@@ -324,9 +285,7 @@
                 }
             })
         }
-        
-        
 
 
     </script>
-{% endblock javascripts %}
+{% endblock javascripts %}}
