@@ -224,6 +224,23 @@ def friends(request):
     return JsonResponse(safe=False, data=context)
 
 
+# 获取友情链接 pub/friends_circle
+@csrf_exempt
+def friends_circle(request):
+    try:
+        all_friends = FriendModel.objects.all()
+        data = list()
+        for i in all_friends:
+            if i.status:
+                data.append({i.name,i.url,i.imageUrl})
+        data.sort(key=lambda x: x["time"])
+        context = {"friends": data, "status": True}
+    except Exception as e:
+        logging.error(repr(e))
+        context = {"msg": repr(e), "status": False}
+    return JsonResponse(safe=False, data=context)
+
+
 # 新增友链 pub/add_friend
 @csrf_exempt
 def add_friend(request):
