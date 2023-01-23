@@ -74,6 +74,8 @@ urlpatterns = [
     path('pub/get_images/', pub.get_images, name='pub_get_images'),
     path('pub/fix/', pub.auto_fix, name='pub_auto_fix'),
     path('pub/friends/', pub.friends, name='pub_friends'),
+    path('pub/friends_circle/', pub.friends_circle, name='pub_friends_circle'),
+
     path('pub/ask_friend/', pub.ask_friend, name='pub_ask_friend'),
     path('pub/add_friend/', pub.add_friend, name='pub_add_friend'),
     path('pub/edit_friend/', pub.edit_friend, name='pub_edit_friend'),
